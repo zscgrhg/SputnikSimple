@@ -51,6 +51,24 @@
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>3.6.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-ie-driver</artifactId>
+            <version>3.6.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-edge-driver</artifactId>
+            <version>3.6.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-support</artifactId>
             <version>3.6.0</version>
             <scope>test</scope>
@@ -112,9 +130,12 @@
                         <include>sputnik/**/*Spec.*</include>
                     </includes>
                     <systemPropertyVariables>
+                        <geb.driver>chrome</geb.driver>
                         <webdriver.gecko.driver>${project.basedir}/driver/geckodriver.exe</webdriver.gecko.driver>
+                        <webdriver.chrome.driver>${project.basedir}/driver/chromedriver.exe</webdriver.chrome.driver>
+                        <webdriver.edge.driver>${project.basedir}/driver/MicrosoftWebDriver.exe</webdriver.edge.driver>
                         <geb.build.baseUrl></geb.build.baseUrl>
-                        <geb.build.reportsDir>${project.basedir}/target/acceptance-reports/geb</geb.build.reportsDir>
+                        <geb.build.reportsDir>${project.basedir}/target/automation-reports/geb</geb.build.reportsDir>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
