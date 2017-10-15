@@ -16,13 +16,13 @@ class HomePageSpec extends GebReportingSpec {
     }
 
     def "搜索"() {
-        when: "搜索关键字redis"
+        when: "搜索关键字 spock"
         Browser.drive {
             go "http://www.baidu.com"
-            $("#kw").value("redis")
+            $("#kw").value("spock")
             $("#su").click()
         }
-        then: "redis搜索结果"
-        title == "redis_百度搜索"
+        then: "spock搜索结果"
+        title == "spock_百度搜索"
     }
 }
