@@ -115,7 +115,7 @@
                         <include>**/*Test.*</include>
                     </includes>
                     <excludes>
-                        <exclude>sputnik/**/*Spec.*</exclude>
+                        <exclude>failsafe/**/*Spec.*</exclude>
                     </excludes>
                     <systemPropertyVariables>
                         <jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
@@ -310,7 +310,7 @@
                         <configuration>
                             <useFile>false</useFile>
                             <includes>
-                                <include>sputnik/**/*Spec.*</include>
+                                <include>failsafe/**/*Spec.*</include>
                             </includes>
                             <systemPropertyVariables>
                                 <geb.driver>firefox</geb.driver>
@@ -359,7 +359,7 @@
                         <configuration>
                             <useFile>false</useFile>
                             <includes>
-                                <include>sputnik/**/*Spec.*</include>
+                                <include>failsafe/**/*Spec.*</include>
                             </includes>
                             <systemPropertyVariables>
                                 <geb.build.baseUrl>${geb.build.baseUrl}</geb.build.baseUrl>

@@ -1,4 +1,4 @@
-package sputnik
+package failsafe
 
 import geb.Browser
 import geb.spock.GebReportingSpec
