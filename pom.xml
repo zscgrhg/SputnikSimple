@@ -11,6 +11,9 @@
     <properties>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.compilerVersion>1.8</maven.compiler.compilerVersion>
     </properties>
     <dependencies>
         <dependency>
@@ -115,35 +118,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.20.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <argLine>-Dfile.encoding=UTF8</argLine>
-                    <useFile>false</useFile>
-                    <includes>
-                        <include>sputnik/**/*Spec.*</include>
-                    </includes>
-                    <systemPropertyVariables>
-                        <geb.driver>${automation.driver}</geb.driver>
-                        <webdriver.gecko.driver>${project.basedir}/driver/geckodriver.exe</webdriver.gecko.driver>
-                        <webdriver.chrome.driver>${project.basedir}/driver/chromedriver.exe</webdriver.chrome.driver>
-                        <webdriver.edge.driver>${project.basedir}/driver/MicrosoftWebDriver.exe</webdriver.edge.driver>
-                        <geb.build.baseUrl></geb.build.baseUrl>
-                        <geb.build.reportsDir>${project.basedir}/target/automation-reports/geb</geb.build.reportsDir>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.7.0</version><!-- 3.1 is the minimum -->
@@ -186,33 +160,195 @@
         </pluginRepository>
     </pluginRepositories>
     <profiles>
+
         <profile>
             <!-- 本地开发环境 -->
             <id>development</id>
-            <properties>
-                <automation.driver>chrome</automation.driver>
-            </properties>
             <activation>
                 <os>
-                    <family>Windows</family>
+                    <family>windows</family>
                 </os>
+                <activeByDefault>true</activeByDefault>
             </activation>
+        </profile>
+
+        <profile>
+            <!-- 本地开发环境 -->
+            <id>automation</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <automation.driver>chrome</automation.driver>
+                <geb.driver>firefox</geb.driver>
+                <webdriver.gecko.driver>${project.basedir}/driver/geckodriver.exe</webdriver.gecko.driver>
+                <webdriver.chrome.driver>${project.basedir}/driver/chromedriver.exe</webdriver.chrome.driver>
+                <webdriver.edge.driver>${project.basedir}/driver/MicrosoftWebDriver.exe</webdriver.edge.driver>
+                <webdriver.ie.driver>${project.basedir}/driver/IEDriverServer.exe</webdriver.ie.driver>
+                <geb.build.baseUrl></geb.build.baseUrl>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>com.example.devtools</groupId>
+                    <artifactId>byteman-boot</artifactId>
+                    <version>0.1-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <version>3.0.0-M1</version>
+                        <executions>
+                            <execution>
+                                <id>enforce-os</id>
+                                <goals>
+                                    <goal>enforce</goal>
+                                </goals>
+                                <configuration>
+                                    <rules>
+                                        <requireOS>
+                                            <family>windows</family>
+                                        </requireOS>
+                                    </rules>
+                                    <fail>true</fail>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.20.1</version>
+                        <executions>
+                            <execution>
+                                <id>chrome</id>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                                <configuration>
+                                    <systemPropertyVariables>
+                                        <geb.driver>chrome</geb.driver>
+                                        <geb.build.reportsDir>${project.basedir}/target/automation-reports/chrome
+                                        </geb.build.reportsDir>
+                                    </systemPropertyVariables>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>firefox</id>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                                <configuration>
+                                    <systemPropertyVariables>
+                                        <geb.driver>firefox</geb.driver>
+                                        <geb.build.reportsDir>${project.basedir}/target/automation-reports/firefox
+                                        </geb.build.reportsDir>
+                                    </systemPropertyVariables>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>ie</id>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                                <configuration>
+                                    <systemPropertyVariables>
+                                        <geb.driver>ie</geb.driver>
+                                        <geb.build.reportsDir>${project.basedir}/target/automation-reports/ie
+                                        </geb.build.reportsDir>
+                                    </systemPropertyVariables>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>htmlunit</id>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                                <configuration>
+                                    <systemPropertyVariables>
+                                        <geb.driver>htmlunit</geb.driver>
+                                        <geb.build.reportsDir>${project.basedir}/target/automation-reports/htmlunit
+                                        </geb.build.reportsDir>
+                                    </systemPropertyVariables>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <argLine>-Dfile.encoding=UTF8</argLine>
+                            <useFile>false</useFile>
+                            <includes>
+                                <include>sputnik/**/*Spec.*</include>
+                            </includes>
+                            <systemPropertyVariables>
+                                <geb.driver>firefox</geb.driver>
+                                <webdriver.gecko.driver>${webdriver.gecko.driver}</webdriver.gecko.driver>
+                                <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
+                                <webdriver.edge.driver>${webdriver.edge.driver}</webdriver.edge.driver>
+                                <webdriver.ie.driver>${webdriver.ie.driver}</webdriver.ie.driver>
+                                <geb.build.baseUrl>${geb.build.baseUrl}</geb.build.baseUrl>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
             <!-- 测试环境 -->
             <id>test</id>
-            <properties>
-                <automation.driver>htmlunit</automation.driver>
-            </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <properties>
+                <geb.build.baseUrl></geb.build.baseUrl>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <version>2.20.1</version>
+                        <executions>
+                            <execution>
+                                <id>htmlunit</id>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                                <configuration>
+                                    <systemPropertyVariables>
+                                        <geb.driver>htmlunit</geb.driver>
+                                        <geb.build.reportsDir>${project.basedir}/target/automation-reports/htmlunit
+                                        </geb.build.reportsDir>
+                                    </systemPropertyVariables>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <argLine>-Dfile.encoding=UTF8</argLine>
+                            <useFile>false</useFile>
+                            <includes>
+                                <include>sputnik/**/*Spec.*</include>
+                            </includes>
+                            <systemPropertyVariables>
+                                <geb.build.baseUrl>${geb.build.baseUrl}</geb.build.baseUrl>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
         <profile>
-            <!-- 生产环境 -->
             <id>production</id>
             <properties>
-                <automation.driver>htmlunit</automation.driver>
             </properties>
         </profile>
     </profiles>
