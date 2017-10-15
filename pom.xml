@@ -264,6 +264,7 @@
                                         <geb.driver>ie</geb.driver>
                                         <geb.build.reportsDir>${project.basedir}/target/automation-reports/ie
                                         </geb.build.reportsDir>
+                                        <geb.driver.port>8811</geb.driver.port>
                                     </systemPropertyVariables>
                                 </configuration>
                             </execution>

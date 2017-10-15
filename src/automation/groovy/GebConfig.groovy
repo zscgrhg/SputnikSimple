@@ -1,0 +1,1 @@
+System.setProperty('geb.build.reportsDir', "target/automation-reports/default")
